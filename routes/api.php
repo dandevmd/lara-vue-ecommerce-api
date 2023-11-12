@@ -12,7 +12,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 
-Route::get('/email/verify', [EmailVerificationController::class, 'sendEmailVerification'])->middleware('auth:sanctum');
+// Route::get('/email/verify', [EmailVerificationController::class, 'sendEmailVerification'])->middleware('auth:sanctum');
 Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verifyEmail'])->middleware('auth:sanctum')->name('verification.verify');
 
 Route::group(['middleware' => ['auth:sanctum', 'admin']], function () {

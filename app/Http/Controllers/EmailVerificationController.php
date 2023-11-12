@@ -30,6 +30,9 @@ class EmailVerificationController extends Controller
 
         if ($request->user()->markEmailAsVerified()) {
             event(new Verified($request->user()));
+            return response()->json([
+                'message' => 'Email successfully verified'
+            ]);
         }
 
         return response()->json([
