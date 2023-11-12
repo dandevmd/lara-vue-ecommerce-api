@@ -2,13 +2,40 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
+
+    public function register(Request $request)
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+
+        if (!$data) {
+            return response([
+                'error' => 'The Provided credentials are not correct'
+            ], 422);
+        }
+
+        $data['password'] = bcrypt($data['password']);
+        $user = User::create($data);
+
+        Auth::login($user);
+
+        return response([
+            'user' => new UserResource($user),
+            'token' => $user->createToken('main')->plainTextToken
+        ]);
+
+    }
     public function login(Request $request)
     {
         //validate credentials 
