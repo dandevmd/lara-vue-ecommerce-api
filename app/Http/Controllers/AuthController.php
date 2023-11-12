@@ -29,6 +29,7 @@ class AuthController extends Controller
         $user = User::create($data);
 
         Auth::login($user);
+        $user->sendEmailVerificationNotification();
 
         return response([
             'user' => new UserResource($user),
