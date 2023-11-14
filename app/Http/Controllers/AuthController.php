@@ -12,29 +12,34 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
+        try {
+            $data = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|max:255|unique:users',
+                'password' => 'required|string|min:8|confirmed',
+            ]);
 
+            if (!$data) {
+                return response([
+                    'error' => 'The Provided credentials are not correct'
+                ], 422);
+            }
 
-        if (!$data) {
+            $data['password'] = bcrypt($data['password']);
+            $user = User::create($data);
+
+            Auth::login($user);
+            // $user->sendEmailVerificationNotification();
+
             return response([
-                'error' => 'The Provided credentials are not correct'
+                'user' => new UserResource($user),
+                'token' => $user->createToken('main')->plainTextToken
+            ]);
+        } catch (\Throwable $th) {
+            return response([
+                'error' => $th->getMessage()
             ], 422);
         }
-
-        $data['password'] = bcrypt($data['password']);
-        $user = User::create($data);
-
-        Auth::login($user);
-        $user->sendEmailVerificationNotification();
-
-        return response([
-            'user' => new UserResource($user),
-            'token' => $user->createToken('main')->plainTextToken
-        ]);
 
     }
     public function login(Request $request)
@@ -57,18 +62,10 @@ class AuthController extends Controller
         }
 
         $user = Auth::user();
-        if (!$user->is_admin) {
-            Auth::logout();
-            return response([
-                'error' => 'Unauthorized'
-            ], 422);
-        }
+
 
         if (!$user->email_verified_at) {
-            Auth::logout();
-            return response([
-                'error' => 'Please verify your email'
-            ], 422);
+            //return  $user->sendEmailVerificationNotification();
         }
 
         $token = $user->createToken('main')->plainTextToken;

@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 class OrdersController extends Controller
 {
 
-    protected $orderStatuses = ['pending', 'completed', 'cancelled'];
     public function index(Request $request)
     {
         $user = $request->user();
@@ -31,15 +30,6 @@ class OrdersController extends Controller
 
         return response()->json($orders, 200);
 
-    }
-
-    public function allUsersOrders(Request $request)
-    {
-        $orders = Order::all()->orderBy('created_at', 'desc');
-        if (!$orders) {
-            return response()->json(['message' => 'No orders found'], 404);
-        }
-        return response()->json($orders, 200);
     }
 
     public function getOrderById(Request $request, $id)
@@ -112,53 +102,11 @@ class OrdersController extends Controller
             $order->orderDetails()->save($orderDetail);
         }
 
-
-
         // Return a success response
         return response()->json([
             'message' => 'Order created successfully',
             'order' => $order
         ], 201);
-    }
-
-    public function updateStatus(Request $request, $id)
-    {
-
-        $order = Order::find($id);
-        if (!$order) {
-            return response()->json(['message' => 'Order not found'], 404);
-        }
-
-        // check if request status in in orDerStatuses return this status
-        if (!in_array($request->status, $this->orderStatuses)) {
-            return response()->json(['message' => 'Invalid status'], 400);
-        }
-        $order->status = $this->orderStatuses[$request->status];
-        $order->updated_by = auth()->user()->id;
-        $order->save();
-
-
-        return response()->json([
-            'message' => 'Order status updated successfully',
-            'order' => $order
-        ], 200);
-    }
-
-    public function delete(Request $request, $id)
-    {
-        $order = Order::find($id);
-        if (!$order) {
-            return response()->json(['message' => 'Order not found'], 404);
-        }
-        // delete order, order items and order details
-        $order->orderDetails()->delete();
-        $order->orderItems()->delete();
-        $order->delete();
-
-        return response()->json([
-            'message' => 'Order deleted successfully'
-        ], 200);
-
     }
 
 }
