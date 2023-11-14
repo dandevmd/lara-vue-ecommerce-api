@@ -1,11 +1,14 @@
 <?php
 
+use App\Http\Controllers\OrdersController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\EmailVerificationController;
+
+
 
 
 Route::post('register', [AuthController::class, 'register']);
@@ -28,6 +31,15 @@ Route::group(['middleware' => ['auth:sanctum', 'admin']], function () {
     Route::get('products/{id}', [ProductController::class, 'show']);
     Route::put('products/{id}', [ProductController::class, 'update']);
     Route::delete('products/{id}', [ProductController::class, 'destroy']);
+});
+
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('/orders', [OrdersController::class, 'index']);
+    Route::get('/orders/admin', [OrdersController::class, 'allUsersOrders'])->middleware('admin');
+    Route::get('/orders/{order:id}', [OrdersController::class, 'getOrderById']);
+    Route::post('/orders/store', [OrdersController::class, 'store']);
+    Route::put('/orders/{order:id}/update', [OrdersController::class, 'updateStatus'])->middleware('admin');
+    Route::delete('/orders/{order:id}/delete', [OrdersController::class, 'delete'])->middleware('admin');
 });
 
 Route::middleware(['guestOrVerified'])->group(function () {
