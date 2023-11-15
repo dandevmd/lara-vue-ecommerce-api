@@ -14,12 +14,12 @@ This is an API made with Laravel 9.X for a potential internet store.API has the 
 - Delete other users or make them admins (only admin)
 
 Brief Explanation of SQL Table Interaction 
-  User table:
-          - has many Products (if admin)
-          - has many Orders
-          - has many CartItems
-          - has one Customer (if is a regular user all his custumer credentials like first and last name...)
-  Orders table:
+User table:
+- has many Products (if admin)
+- has many Orders
+- has many CartItems
+- has one Customer (if is a regular user all his custumer credentials like first and last name...)
+Orders table:
           - has one OrderDetail
           - has one CustomerAdress
           - has many OrderItems
