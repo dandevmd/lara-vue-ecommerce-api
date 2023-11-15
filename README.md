@@ -13,19 +13,20 @@ This is an API made with Laravel 9.X for a potential internet store.API has the 
 - Statistic for admins (active custumers, most sold product, country with most orders, total income...)
 - Delete other users or make them admins (only admin)
 
-Brief Explanation of SQL Table Interaction 
-User table:
-- has many Products (if admin)
-- has many Orders
-- has many CartItems
-- has one Customer (if is a regular user all his custumer credentials like first and last name...)
-Orders table:
-          - has one OrderDetail
-          - has one CustomerAdress
-          - has many OrderItems
+<pre>
+Brief Explanation of SQL Table Interaction:
+    User table:
+        - has many Products (if admin)
+        - has many Orders
+        - has many CartItems
+        - has one Customer (if is a regular user all his custumer credentials like first and last name...)
+    Orders table:
+        - has one OrderDetail
+        - has one CustomerAdress
+        - has many OrderItems
+</pre>
 
-
-
+<pre>
 Install Laravel API
     Download the project (or clone using GIT)
     Confirgure your enviroment variables (mysql and mailtrap as email server)
@@ -35,6 +36,7 @@ Install Laravel API
     Uncomment DatabaseSeeder.php
     Run php artisan db:seed DatabaseSeeder.php
     Start local server by executing php artisan serve
+</pre>
     
 
   
