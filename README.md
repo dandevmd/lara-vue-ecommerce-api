@@ -7,16 +7,40 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+This is an API made with Laravel 9.X for a potential internet store.API has the following functional:
+- Authorization performed with Sanctum
+- Admin user
+- Email validation for registered users
+- Reset password by email
+- Add/Remove/Update/Get products to card (for registered users cart is stored in db for guests in cookies)
+- User account management (delete account, update credentials);
+- Get and store Orders which belong to user
+- Full CRUD for Orders and Products (only for admin users)
+- Statistic for admins (active custumers, most sold product, country with most orders, total income...)
+- Delete other users or make them admins (only admin)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Brief Explanation of SQL Table Interaction 
+  User table:
+          - has many Products (if admin)
+          - has many Orders
+          - has many CartItems
+          - has one Customer (if is a regular user all his custumer credentials like first and last name...)
+  Orders table:
+          - has one OrderDetail
+          - has one CustomerAdress
+          - has many OrderItems
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
 
+Install Laravel API
+    Download the project (or clone using GIT)
+    Confirgure your enviroment variables (mysql and mailtrap as email server)
+    Navigate to the project's root directory using terminal
+    Run composer install
+    Run migrations php artisan migrate
+    Uncomment DatabaseSeeder.php
+    Run php artisan db:seed DatabaseSeeder.php
+    Start local server by executing php artisan serve
+    
+
+  
