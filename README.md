@@ -19,11 +19,14 @@ Brief Explanation of SQL Table Interaction:
         - has many Products (if admin)
         - has many Orders
         - has many CartItems
-        - has one Customer (if is a regular user all his custumer credentials like first and last name...)
+        - has one Customer (info like first,last name, DOB...)
+    Customer table:
+        - has one CustomeAdress
     Orders table:
         - has one OrderDetail
         - has one CustomerAdress
         - has many OrderItems
+        - has one Payment 
 </pre>
 
 <pre>
